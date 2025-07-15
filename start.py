@@ -8,6 +8,42 @@ class Card:
         self.name = name
         self.unicode = unicode
 
+def calculateScore(arr):
+    non_ace_cards = []
+    ace_cards = []
+    for x in range(len(arr)):
+        if(arr[x].name == 'ace'):
+            ace_cards.append(arr[x])
+        else:
+            non_ace_cards.append(arr[x])
+
+    total = 0
+
+    for x in range(len(non_ace_cards)):
+        if(non_ace_cards[x].value >= 10 ):
+            total += 10
+        else:
+            total += non_ace_cards[x].value
+
+    for x in range(len(ace_cards)):
+        if(total + 11 > 21):
+            total += 1
+        else:
+            total += 11
+    
+    return total
+    # look at array
+    # if array contains any aces, split array into non ace cards and ace cards
+    # add array of non ace cards
+    # if total of non ace cards is greater than 21 then bust
+    # else continue
+    # add ace cards one at a time
+    # check total of non ace and current card from ace array
+    # if +11 is greater than 21 add 1
+    # repeat until no more aces in the ace array
+    # if total is greater than 21 then bust
+    # actually this funcion shouldn't determine if you bust, it should just return the result
+
 cardValueNameDict = {
         1: {"name": 'ace', "unicode_ending": int("1", base=16)},
         2: {"name": 'two', "unicode_ending": int("2", base=16)},
@@ -145,6 +181,10 @@ dealer_hand.append(mydeck.cards.pop(0))
 player_hand.append(mydeck.cards.pop(0))
 dealer_hand.append(mydeck.cards.pop(0))
 player_hand.append(mydeck.cards.pop(0))
+dealer_hand.append(mydeck.cards.pop(0))
+player_hand.append(mydeck.cards.pop(0))
+dealer_hand.append(mydeck.cards.pop(0))
+player_hand.append(mydeck.cards.pop(0))
 
 dealer_total = 0
 for x in range(len(dealer_hand)):
@@ -157,6 +197,10 @@ for x in range(len(dealer_hand)):
         dealer_total += dealer_hand[x].value
 
 print("Dealer Total: {}".format(dealer_total))
+
+dealer_total2 = calculateScore(dealer_hand)
+print("Dealer Total: {}".format(dealer_total2))
+
 print("+++++++++++++++++")
 
 player_total = 0
@@ -170,3 +214,8 @@ for x in range(len(player_hand)):
         player_total += player_hand[x].value
 
 print("player Total: {}".format(player_total))
+
+player_total2 = calculateScore(player_hand)
+
+
+print("player Total: {}".format(player_total2))
