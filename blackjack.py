@@ -1,4 +1,5 @@
 import random
+import time
 
 class Card:
     def __init__(self, color, suit, value, name, unicode):
@@ -129,94 +130,82 @@ class StandardDeck:
 
 
 mydeck = StandardDeck(52, [])
-
-
-for x in range(52):
-    print('===============')
-    print("{} {}".format(mydeck.cards[x].unicode, mydeck.back))
-    # print(mydeck.back)
-    print(mydeck.cards[x].color)
-    print(mydeck.cards[x].value)
-    print(mydeck.cards[x].name)
-    print(mydeck.cards[x].suit)
-    print('--------------')
-
-
-print(len(mydeck.cards))
-
-acard = mydeck.cards.pop(2)
-
-print(acard.name + " of " + acard.suit)
-
-print(len(mydeck.cards))
-
 mydeck.shuffle()
-
-for x in range(len(mydeck.cards)):
-    print('===============')
-    print("{} {}".format(mydeck.cards[x].unicode, mydeck.back))
-    # print(mydeck.back)
-    print(mydeck.cards[x].color)
-    print(mydeck.cards[x].value)
-    print(mydeck.cards[x].name)
-    print(mydeck.cards[x].suit)
-    print('--------------')
-
-
-mydeck.flash()
-
-
-mydeck.cards.append(acard)
-
-mydeck.flash()
-
 
 dealer_hand = []
-
 player_hand = []
 
-mydeck.shuffle()
-
-dealer_hand.append(mydeck.cards.pop(0))
-player_hand.append(mydeck.cards.pop(0))
-dealer_hand.append(mydeck.cards.pop(0))
-player_hand.append(mydeck.cards.pop(0))
 dealer_hand.append(mydeck.cards.pop(0))
 player_hand.append(mydeck.cards.pop(0))
 dealer_hand.append(mydeck.cards.pop(0))
 player_hand.append(mydeck.cards.pop(0))
 
+game_running = True
+player_turn = True
 
-dealer_total = 0
-for x in range(len(dealer_hand)):
-    print("{} of {}".format(dealer_hand[x].name, dealer_hand[x].suit))
-    if dealer_hand[x].value == 1:
-        dealer_total += 11
-    elif dealer_hand[x].value >= 10:
-        dealer_total += 10
+while(game_running):
+    print("====================")
+    if(player_turn):
+        print("Dealer Total: {} + ?".format(calculateScore([dealer_hand[0]])))
+        print("{} of {}".format(dealer_hand[0].name, dealer_hand[0].suit))
+        print("? of ?")
+        print("--------------------")
+        print("Player Total: {}".format(calculateScore(player_hand)))
+        for x in range(len(player_hand)):
+            print("{} of {}".format(player_hand[x].name, player_hand[x].suit))
+        print("====================")
+        if(calculateScore(player_hand) <= 21):
+            player_action = input('(H)it or (S)tay? ')
+            if(player_action[0].lower() == 'h'):
+                player_hand.append(mydeck.cards.pop(0))
+            elif(player_action[0].lower() == 's'):
+                player_turn = False
+            else:
+                print('Error: Not a valid action')
+        else:
+            print('BUST!')
+            player_turn = False
     else:
-        dealer_total += dealer_hand[x].value
+        print("Dealer Total: {}".format(calculateScore(dealer_hand)))
+        for x in range(len(dealer_hand)):
+            print("{} of {}".format(dealer_hand[x].name, dealer_hand[x].suit))
+        print("--------------------")
+        print("Player Total: {}".format(calculateScore(player_hand)))
+        for x in range(len(player_hand)):
+            print("{} of {}".format(player_hand[x].name, player_hand[x].suit))
+        print("====================")
+        
+        if(calculateScore(dealer_hand) > 21):
+            print("You Win!")
+            game_running = False
+        elif(calculateScore(player_hand) > 21):
+            print("The House Wins")
+            game_running = False
+        elif(calculateScore(player_hand) < calculateScore(dealer_hand)):
+            print("The House Wins")
+            game_running = False
+        elif(calculateScore(player_hand) == 21 and calculateScore(dealer_hand) == 21):
+            print("Tie Game")
+            game_running = False
+        elif(calculateScore(player_hand) == calculateScore(dealer_hand)):
+            print("Tie Game")
+            game_running = False
+        elif(calculateScore(player_hand) > calculateScore(dealer_hand)):
+            print("Dealer Will (H)it")
+            time.sleep(2)
+            dealer_hand.append(mydeck.cards.pop(0))
+        else:
+            print("You Win!")
+            game_running = False
 
-print("Dealer Total: {}".format(dealer_total))
-
-dealer_total2 = calculateScore(dealer_hand)
-print("Dealer Total: {}".format(dealer_total2))
-
-print("+++++++++++++++++")
-
-player_total = 0
-for x in range(len(player_hand)):
-    print("{} of {}".format(player_hand[x].name, player_hand[x].suit))
-    if player_hand[x].value == 1:
-        player_total += 11
-    elif player_hand[x].value >= 10:
-        player_total += 10
-    else:
-        player_total += player_hand[x].value
-
-print("player Total: {}".format(player_total))
-
-player_total2 = calculateScore(player_hand)
 
 
-print("player Total: {}".format(player_total2))
+
+# dealer_total2 = calculateScore(dealer_hand)
+# print("Dealer Total: {}".format(dealer_total2))
+
+# print("+++++++++++++++++")
+
+# player_total2 = calculateScore(player_hand)
+
+# print("player Total: {}".format(player_total2))
