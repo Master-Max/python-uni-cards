@@ -147,13 +147,21 @@ while(game_running):
     print("====================")
     if(player_turn):
         print("Dealer Total: {} + ?".format(calculateScore([dealer_hand[0]])))
-        print("{} of {}".format(dealer_hand[0].name, dealer_hand[0].suit))
-        print("? of ?")
+        # cardA_print = "{} of {}".format(dealer_hand[0].name, dealer_hand[0].suit)
+        print(" {} of {}".format(dealer_hand[0].name, dealer_hand[0].suit))
+        # cardB_print = "? of ?"
+        print(" ? of ?")
+        # print("     {} // {} //".format(cardA_print,cardB_print))
+        # print("{} {}".format(dealer_hand[0].unicode, mydeck.back))
         print("--------------------")
         print("Player Total: {}".format(calculateScore(player_hand)))
         for x in range(len(player_hand)):
-            print("{} of {}".format(player_hand[x].name, player_hand[x].suit))
-        print("====================")
+            print(" {} of {}".format(player_hand[x].name, player_hand[x].suit))
+        print("====================") # CARD AREA START
+        print(" {} {} {}+?".format(dealer_hand[0].unicode, mydeck.back, calculateScore([dealer_hand[0]])))
+        print("--------------------")
+        for x in range(len(player_hand)): print(" {}".format(player_hand[x].unicode), end="")
+        print(" {}\n====================".format(calculateScore(player_hand))) # CARD AREA END
         if(calculateScore(player_hand) <= 21):
             player_action = input('(H)it or (S)tay? ')
             if(player_action[0].lower() == 'h'):
@@ -167,35 +175,43 @@ while(game_running):
             player_turn = False
     else:
         print("Dealer Total: {}".format(calculateScore(dealer_hand)))
+        # card_print = "     {} // {}"
+        # print("    ")
         for x in range(len(dealer_hand)):
-            print("{} of {}".format(dealer_hand[x].name, dealer_hand[x].suit))
+            print(" {} of {}".format(dealer_hand[x].name, dealer_hand[x].suit))
         print("--------------------")
         print("Player Total: {}".format(calculateScore(player_hand)))
         for x in range(len(player_hand)):
-            print("{} of {}".format(player_hand[x].name, player_hand[x].suit))
-        print("====================")
+            print(" {} of {}".format(player_hand[x].name, player_hand[x].suit))
+        print("====================") # CARD AREA START
+        # print(" {} {} {}+?".format(dealer_hand[0].unicode, mydeck.back, calculateScore([dealer_hand[0]])))
+        for x in range(len(dealer_hand)): print(" {}".format(dealer_hand[x].unicode), end="")
+        print(" {}\n--------------------".format(calculateScore(dealer_hand)))
+        # print("--------------------")
+        for x in range(len(player_hand)): print(" {}".format(player_hand[x].unicode), end="")
+        print(" {}\n====================".format(calculateScore(player_hand))) # CARD AREA END
         
         if(calculateScore(dealer_hand) > 21):
-            print("You Win!")
+            print("   You Win!")
             game_running = False
         elif(calculateScore(player_hand) > 21):
-            print("The House Wins")
+            print("   The House Wins")
             game_running = False
         elif(calculateScore(player_hand) < calculateScore(dealer_hand)):
-            print("The House Wins")
+            print("   The House Wins")
             game_running = False
         elif(calculateScore(player_hand) == 21 and calculateScore(dealer_hand) == 21):
-            print("Tie Game")
+            print("   Tie Game")
             game_running = False
         elif(calculateScore(player_hand) == calculateScore(dealer_hand)):
-            print("Tie Game")
+            print("   Tie Game")
             game_running = False
         elif(calculateScore(player_hand) > calculateScore(dealer_hand)):
             print("Dealer Will (H)it")
             time.sleep(2)
             dealer_hand.append(mydeck.cards.pop(0))
         else:
-            print("You Win!")
+            print("   You Win!")
             game_running = False
 
 
